@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title></title>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      body {
+        background: #232323;
+        margin: 0%;
+        font-family: sans-serif;
+      }
+
+      .sequre {
+        width: 30%;
+        background-color: yellow;
+        padding-bottom: 30%;
+        float: left;
+        margin: 1.66%;
+        border-radius: 15%;
+        transition: background 0.6s;
+      }
+
+      .container {
+        width: 600px;
+        margin: 20px auto;
+      }
+
+      h1 {
+        line-height: 1.1;
+        text-align: center;
+        font-weight: normal;
+        color: white;
+        background-color: steelblue;
+        margin: 0%;
+        text-transform: uppercase;
+        padding: 20px 0;
+        transition: background 0.6s;
+      }
+
+      span {
+        color: white;
+      }
+
+      .selected {
+        background-color: steelblue;
+        color: white;
+      }
+
+      #stripe {
+        background-color: white;
+        height: 30px;
+        text-align: center;
+        color: black;
+      }
+
+      #colorDisplay {
+        font-size: 200%;
+      }
+
+      button {
+        border: none;
+        background: none;
+        text-transform: uppercase;
+        height: 100%;
+        font-weight: 700;
+        color: steelblue;
+        letter-spacing: 1px;
+        font-size: 20px;
+        transition: all 0.3s;
+        outline: none;
+      }
+
+      #msg {
+        display: inline-block;
+        width: 20%;
+        color: steelblue;
+        text-transform: uppercase;
+        font-weight: 700;
+      }
+
+      button:hover {
+        background-color: steelblue;
+        color: white;
+      }
+
+      @media (max-width: 605px) {
+        .container {
+          width: 80%;
+        }
+      }
+
+      @media (max-width: 590px) {
+        h1 {
+          font-size: 150%;
+        }
+      }
+
+      @media (max-width: 418px) {
+        h1 {
+          font-size: 100%;
+        }
+      }
+
+      @media (max-width: 452px) {
+        button {
+          font-size: 12px;
+        }
+        #msg {
+          font-size: 9px;
+          font-weight: 800;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>
+      THE GREAT <br />
+      <span id="colorDisplay">RGB</span> <br />
+      GUESSING GAME
+    </h1>
+    <div id="stripe">
+      <button id="reset">New Color</button>
+      <span id="msg"></span>
+      <button id="easyBtn">Easy</button>
+      <button id="hardBtn" class="selected">Hard</button>
+    </div>
+
+    <div class="container">
+      <div class="sequre"></div>
+      <div class="sequre"></div>
+      <div class="sequre"></div>
+      <div class="sequre"></div>
+      <div class="sequre"></div>
+      <div class="sequre"></div>
+    </div>
+    <script>
+      alert(
+        "खम्मा घणी सा| 🙏 , मैं दीपांशु सारस्वत , थारो सगळा रो ,  म्हारे खेल माया स्वागत करू सा"
+      );
+      var numsequre = 6;
+      var colors = genraterandomcolors(numsequre);
+      var msg = document.querySelector("#msg");
+      var sequreBox = document.querySelectorAll(".sequre");
+      var pickedColor = PickedColor();
+      var colorDisplay = document.querySelector("#colorDisplay");
+
+      var h1 = document.querySelector("h1");
+      var resetButtonAndNewColor = document.querySelector("#reset");
+      var easyBtn = document.querySelector("#easyBtn");
+      var hardBtn = document.querySelector("#hardBtn");
+
+      easyBtn.addEventListener("click", function () {
+        easyBtn.classList.add("selected");
+        hardBtn.classList.remove("selected");
+        var numsequre = 3;
+        colors = genraterandomcolors(numsequre);
+        pickedColor = PickedColor();
+        colorDisplay.textContent = pickedColor;
+        for (var i = 0; i < sequreBox.length; i++) {
+          if (colors[i]) {
+            sequreBox[i].style.background = colors[i];
+          } else {
+            sequreBox[i].style.display = "none";
+          }
+        }
+      });
+
+      hardBtn.addEventListener("click", function () {
+        easyBtn.classList.remove("selected");
+        hardBtn.classList.add("selected");
+        numsequre = 6;
+        colors = genraterandomcolors(numsequre);
+        pickedColor = PickedColor();
+        colorDisplay.textContent = pickedColor;
+        for (var i = 0; i < sequreBox.length; i++) {
+          sequreBox[i].style.background = colors[i];
+
+          sequreBox[i].style.display = "block";
+        }
+      });
+
+      resetButtonAndNewColor.addEventListener("click", function () {
+        colors = genraterandomcolors(numsequre);
+        pickedColor = PickedColor();
+        colorDisplay.textContent = pickedColor;
+        msg.textContent = "";
+        resetButtonAndNewColor.textContent = "NEW COLORS";
+        for (var i = 0; i < sequreBox.length; i++) {
+          sequreBox[i].style.background = colors[i];
+        }
+        h1.style.background = "steelblue ";
+      });
+
+      colorDisplay.textContent = pickedColor;
+
+      for (var i = 0; i < sequreBox.length; i++) {
+        sequreBox[i].style.background = colors[i];
+        sequreBox[i].addEventListener("click", function () {
+          var ClickedColor = this.style.background;
+          if (ClickedColor === pickedColor) {
+            msg.textContent = "Correct!";
+            ChangedColor(ClickedColor);
+            h1.style.background = ClickedColor;
+            resetButtonAndNewColor.textContent = "Play Again";
+          } else {
+            this.style.background = "#232323";
+            msg.textContent = "Try Again ";
+          }
+        });
+      }
+
+      function ChangedColor(color) {
+        for (var i = 0; i < sequreBox.length; i++) {
+          sequreBox[i].style.background = color;
+        }
+      }
+
+      function PickedColor() {
+        var random = Math.floor(Math.random() * colors.length);
+        return colors[random];
+      }
+
+      function genraterandomcolors(num) {
+        // 1. hum phle ek empty arry bnaenge
+        var arR = [];
+        // 2. usme random values dalenge
+        for (var i = 0; i < num; i++) {
+          // 3. use return krenge
+          arR.push(colorComponenet());
+        }
+        return arR;
+      }
+
+      function colorComponenet() {
+        // pick red from 0-255
+        var r = Math.floor(Math.random() * 255);
+        // pick green from 0-255
+        var g = Math.floor(Math.random() * 255);
+        // pick blue  from 0-255
+        var b = Math.floor(Math.random() * 255);
+        return "rgb(" + r + ", " + g + ", " + b + ")";
+      }
+    </script>
+  </body>
+</html>
